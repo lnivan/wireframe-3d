@@ -15,7 +15,7 @@
 
 ## About
 
-A small 3D renderer written from scratch on top of Pygame's 2D line drawing. It has its own vector and matrix classes, turns world points into camera space with rotation matrices, and projects them onto the screen with a pinhole-camera model. Pygame is used only for the window, input and drawing lines. The demo is a wireframe cube (`cubo`) that you fly around with the keyboard and mouse. Two later experiments sit in `experiments/`: a point cloud with bounding boxes, and an unfinished start of a Minecraft-style 3D game.
+A small 3D renderer written from scratch on top of Pygame's 2D line drawing. It has its own vector and matrix classes, turns world points into camera space with rotation matrices, and projects them onto the screen with a pinhole-camera model. Pygame is used only for the window, input and drawing lines and dots. The demo is a wireframe cube (`cubo`) that you fly around with the keyboard and mouse. Two experiments sit in `experiments/`: a point cloud with bounding boxes, and an unfinished start of a Minecraft-style 3D game.
 
 ## Quick start
 
@@ -62,10 +62,10 @@ The point-cloud experiment runs the same way with `python experiments/point-clou
 
 ## Limitations
 
-- There is no real clipping. The root renderer projects points behind the camera through the centre, so they appear mirrored, and a vertex exactly in the camera plane ($x_c = 0$) raises `ZeroDivisionError`. The point-cloud version hides such points, and drops any line with an endpoint behind the camera instead of clipping it.
+- There is no real clipping. The root renderer projects points behind the camera through the centre, so they appear mirrored, and a vertex exactly in the camera plane ($x_c = 0$) raises `ZeroDivisionError`. The point-cloud version hides points behind the camera, and drops any line with an endpoint behind the camera instead of clipping it.
 - Movement is a fixed step per frame and the loop has no `Clock.tick`, so speed depends on the machine and one CPU core stays busy. `deltaTime` is computed but never used.
 - Every vertex builds two new 3 × 3 matrices in pure Python each frame. This is fine for a cube but slow for bigger scenes.
-- The window is fixed at 1400 × 800, the scene is hard-coded, and each script defines its own copy of `Vector3` and `Matrix`.
+- The window is fixed at 1400 × 800, the scene is hard-coded, and each script defines its own copy of `Vector3`, and all but `minecraft3D.py` also of `Matrix`.
 - `experiments/minecraft-3d` does not run as it is. `minecraft3D.py` never imports `math`, so creating a vector raises `NameError`, and `Engine3D.init()` blocks until the window is closed once.
 - In `experiments/point-cloud/cubo.py` the search for the smallest z compares against the point with the smallest x, so `minz` can be wrong. The script also prints the rotated points to the console as object addresses.
 
