@@ -9,7 +9,7 @@
 ![Status](https://img.shields.io/badge/status-prototype-BF8700?style=flat-square)
 ![Year](https://img.shields.io/badge/year-2023--2024-8250DF?style=flat-square)
 
-<img src="docs/preview.gif" alt="A white wireframe cube on black, seen from a camera that flies a full circle around it while turning to keep it in view" width="560">
+<img src="docs/preview.gif" alt="A white wireframe cube on black, seen from a camera that flies in and then strafes around it while turning to keep it in view" width="560">
 
 </div>
 
