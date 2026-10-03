@@ -7,7 +7,6 @@
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Pygame](https://img.shields.io/badge/Pygame-2.x-30363D?style=flat-square)
 ![Status](https://img.shields.io/badge/status-prototype-BF8700?style=flat-square)
-![Year](https://img.shields.io/badge/year-2023--2024-8250DF?style=flat-square)
 
 <img src="docs/preview.gif" alt="A white wireframe cube on black, seen from a camera that flies in and then strafes around it while turning to keep it in view" width="560">
 
@@ -57,7 +56,7 @@ The point-cloud experiment runs the same way with `python experiments/point-clou
 | --- | --- |
 | `Engine3D.py` | Vector and matrix classes, camera state, `renderPoint` and `renderLine`. Opens the window on import. |
 | `cubo.py` | The demo: input handling, camera movement and the wireframe cube |
-| `experiments/point-cloud/` | July 2024 variant of both files: random point cloud, rotated-frame extremes and bounding boxes |
+| `experiments/point-cloud/` | A later variant of both files: random point cloud, rotated-frame extremes and bounding boxes |
 | `experiments/minecraft-3d/` | Earlier engine fork with cube and polygon helpers, the start of a Minecraft-style 3D game |
 
 ## Limitations
@@ -68,10 +67,6 @@ The point-cloud experiment runs the same way with `python experiments/point-clou
 - The window is fixed at 1400 × 800, the scene is hard-coded, and each script defines its own copy of `Vector3`, and all but `minecraft3D.py` also of `Matrix`.
 - `experiments/minecraft-3d` does not run as it is. `minecraft3D.py` never imports `math`, so creating a vector raises `NameError`, and `Engine3D.init()` blocks until the window is closed once.
 - In `experiments/point-cloud/cubo.py` the search for the smallest z compares against the point with the smallest x, so `minz` can be wrong. The script also prints the rotated points to the console as object addresses.
-
-## Background
-
-The renderer and the Minecraft-style fork were written in or before mid-2023, as both appear in a code backup from that time. The point-cloud experiment dates from July 2024. The project was put on GitHub in 2026.
 
 ---
 
