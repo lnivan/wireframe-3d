@@ -1,3 +1,9 @@
+# The five Platonic solids above a floor grid, drawn with the root Engine3D.
+# Run it from the repository root with: python examples/solidos.py
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+
 import Engine3D
 import pygame
 import math
@@ -69,13 +75,16 @@ for i in range(-3, 4):
     edges.append((sceneCenter + Vector3(-3, i, floor), sceneCenter + Vector3(3, i, floor)))
 
 
+# Start above the ring, looking down at its centre, so that no two solids overlap on screen
+Engine3D.CameraYRotation = 0.42
+Engine3D.CameraZRotation = 0.3
+Engine3D.cameraPosition = sceneCenter - transformVectorYZ(Vector3(1, 0, 0), Engine3D.CameraYRotation, Engine3D.CameraZRotation) * 7.5
+
+
 xVel = 0
 yVel = 0
 zVel = 0
 rotating = False
-
-# More lines per frame than the cube means fewer frames per second, so take bigger steps
-speed = 5
 
 running = True
 while running == True:
@@ -94,17 +103,17 @@ while running == True:
             Engine3D.CameraZRotation = Engine3D.CameraZRotation - mdX * 0.001
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_d:
-                yVel = speed
+                yVel = 1
             if event.key == pygame.K_a:
-                yVel = -speed
+                yVel = -1
             if event.key == pygame.K_w:
-                xVel = speed
+                xVel = 1
             if event.key == pygame.K_s:
-                xVel = -speed
+                xVel = -1
             if event.key == pygame.K_LCTRL:
-                zVel = speed
+                zVel = 1
             if event.key == pygame.K_LSHIFT:
-                zVel = -speed
+                zVel = -1
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 running = False
