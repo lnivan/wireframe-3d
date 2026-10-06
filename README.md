@@ -14,7 +14,7 @@
 
 ## About
 
-A small 3D renderer written from scratch on top of Pygame's 2D line drawing. It has its own vector and matrix classes, turns world points into camera space with rotation matrices, and projects them onto the screen with a pinhole-camera model. Pygame is used only for the window, input and drawing lines and dots. The demo is a wireframe cube (`cubo`) that you fly around with the keyboard and mouse. Two experiments sit in `experiments/`: a point cloud with bounding boxes, and an unfinished start of a Minecraft-style 3D game.
+A small 3D renderer written from scratch on top of Pygame's 2D line drawing. It has its own vector and matrix classes, turns world points into camera space with rotation matrices, and projects them onto the screen with a pinhole-camera model. Pygame is used only for the window, input and drawing lines and dots. The demo is a wireframe cube (`cubo`) that you fly around with the keyboard and mouse, and a second scene (`solidos`, "solids") shows the five Platonic solids. Two experiments sit in `experiments/`: a point cloud with bounding boxes, and an unfinished start of a Minecraft-style 3D game.
 
 ## Quick start
 
@@ -23,7 +23,7 @@ python -m pip install -r requirements.txt
 python cubo.py
 ```
 
-The point-cloud experiment runs the same way with `python experiments/point-cloud/cubo.py`.
+`python solidos.py` opens the Platonic solids scene with the same controls. The point-cloud experiment runs the same way with `python experiments/point-cloud/cubo.py`.
 
 ## Controls
 
@@ -46,7 +46,8 @@ The point-cloud experiment runs the same way with `python experiments/point-clou
   ```
 
 - **Lines and the cube.** `renderLine` projects both endpoints and joins them with `pygame.draw.line`, and the root renderer also marks each endpoint with a small dot. The cube is twelve hard-coded edges of the box $[10, 12] \times [0, 2] \times [0, 2]$.
-- **Fly camera.** Each frame the camera moves 0.01 units (0.1 in the point-cloud experiment) along its own forward and sideways axes, which `transformVectorYZ` gets by applying the inverse of the view rotation to the unit vectors. Vertical movement is along the world z axis. While the right button is held, each pixel of mouse motion turns the camera by 0.001 rad.
+- **Platonic solids.** `solidos.py` builds the five solids from their standard coordinates (the dodecahedron and icosahedron use the golden ratio $\varphi$), scales each so that its vertices lie on a sphere of radius 0.7, and takes as edges the pairs of vertices at the smallest distance. They stand in a ring above a 6 × 6 floor grid, 104 lines in all.
+- **Fly camera.** Each frame the camera moves 0.01 units (0.05 in `solidos.py`, 0.1 in the point-cloud experiment) along its own forward and sideways axes, which `transformVectorYZ` gets by applying the inverse of the view rotation to the unit vectors. Vertical movement is along the world z axis. While the right button is held, each pixel of mouse motion turns the camera by 0.001 rad.
 - **Point-cloud experiment.** It scatters 100 random points in $[-10, 10]^3$ and draws red coordinate axes. It rotates a copy of the points by 45° about z, x and y in turn, and picks the points with the largest and smallest x, y and z in that rotated frame. It then draws twelve axis-aligned wireframe boxes (`dibujarcubo`, "draw cube") between pairs of those extreme points, and colours red every point that lies strictly inside one of the boxes. Its renderer adds per-line colours and skips points and lines behind the camera.
 - **Minecraft-style fork.** An earlier copy of the engine adds `renderShape` (a closed polygon), `renderCube(center, length)`, `fillScreen`, `flipScreen` and a blocking `init()` loop. `minecraft3D.py` was meant to draw a cube at $(10, 0, 0)$ every frame as the first step of a voxel game.
 
@@ -56,6 +57,7 @@ The point-cloud experiment runs the same way with `python experiments/point-clou
 | --- | --- |
 | `Engine3D.py` | Vector and matrix classes, camera state, `renderPoint` and `renderLine`. Opens the window on import. |
 | `cubo.py` | The demo: input handling, camera movement and the wireframe cube |
+| `solidos.py` | A second scene on the same engine: the five Platonic solids above a floor grid |
 | `experiments/point-cloud/` | A later variant of both files: random point cloud, rotated-frame extremes and bounding boxes |
 | `experiments/minecraft-3d/` | Earlier engine fork with cube and polygon helpers, the start of a Minecraft-style 3D game |
 
@@ -64,7 +66,7 @@ The point-cloud experiment runs the same way with `python experiments/point-clou
 - There is no real clipping. The root renderer projects points behind the camera through the centre, so they appear mirrored, and a vertex exactly in the camera plane ($x_c = 0$) raises `ZeroDivisionError`. The point-cloud version hides points behind the camera, and drops any line with an endpoint behind the camera instead of clipping it.
 - Movement is a fixed step per frame and the loop has no `Clock.tick`, so speed depends on the machine and one CPU core stays busy. `deltaTime` is computed but never used.
 - Every vertex builds two new 3 × 3 matrices in pure Python each frame. This is fine for a cube but slow for bigger scenes.
-- The window is fixed at 1400 × 800, the scene is hard-coded, and each script defines its own copy of `Vector3`, and all but `minecraft3D.py` also of `Matrix`.
+- The window is fixed at 1400 × 800, the scenes are hard-coded, and every script except `solidos.py` defines its own copy of `Vector3`, and all but `minecraft3D.py` also of `Matrix`.
 - `experiments/minecraft-3d` does not run as it is. `minecraft3D.py` never imports `math`, so creating a vector raises `NameError`, and `Engine3D.init()` blocks until the window is closed once.
 - In `experiments/point-cloud/cubo.py` the search for the smallest z compares against the point with the smallest x, so `minz` can be wrong. The script also prints the rotated points to the console as object addresses.
 
